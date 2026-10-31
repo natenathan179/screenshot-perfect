@@ -11,7 +11,11 @@ export function Markdown({ text }: { text: string }) {
           return (
             <div key={i}>
               <h2>{(h ?? "").slice(3)}</h2>
-              {rest.length > 0 && <p>{rest.join(" ")}</p>}
+              {rest.some((l) => /^[-*] /.test(l)) ? (
+                <ul>{rest.filter((l) => l.trim()).map((l, j) => <li key={j}>{l.replace(/^[-*] /, "")}</li>)}</ul>
+              ) : (
+                rest.length > 0 && <p>{rest.join(" ")}</p>
+              )}
             </div>
           );
         }
