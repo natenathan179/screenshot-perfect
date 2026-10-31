@@ -55,6 +55,7 @@ export type Database = {
       }
       product_images: {
         Row: {
+          alt_text: string | null
           created_at: string
           id: string
           position: number
@@ -63,6 +64,7 @@ export type Database = {
           url: string
         }
         Insert: {
+          alt_text?: string | null
           created_at?: string
           id?: string
           position?: number
@@ -71,6 +73,7 @@ export type Database = {
           url: string
         }
         Update: {
+          alt_text?: string | null
           created_at?: string
           id?: string
           position?: number
@@ -100,11 +103,14 @@ export type Database = {
           is_bestseller: boolean
           is_featured: boolean
           is_new: boolean
+          keywords: string | null
           name: string
           price: number
           purity: string | null
           rating: number
           review_count: number
+          seo_description: string | null
+          seo_title: string | null
           short_description: string | null
           size: string | null
           slug: string
@@ -124,11 +130,14 @@ export type Database = {
           is_bestseller?: boolean
           is_featured?: boolean
           is_new?: boolean
+          keywords?: string | null
           name: string
           price?: number
           purity?: string | null
           rating?: number
           review_count?: number
+          seo_description?: string | null
+          seo_title?: string | null
           short_description?: string | null
           size?: string | null
           slug: string
@@ -148,11 +157,14 @@ export type Database = {
           is_bestseller?: boolean
           is_featured?: boolean
           is_new?: boolean
+          keywords?: string | null
           name?: string
           price?: number
           purity?: string | null
           rating?: number
           review_count?: number
+          seo_description?: string | null
+          seo_title?: string | null
           short_description?: string | null
           size?: string | null
           slug?: string
