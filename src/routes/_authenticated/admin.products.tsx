@@ -103,7 +103,7 @@ function ProductForm({ row, onClose, onSaved }: { row: Row; onClose: () => void;
     const { id, product_images, ...rest } = f;
     const payload = { ...rest, slug: slugify(f.slug || f.name), price: Number(f.price) || 0, rating: Number(f.rating) || 5, review_count: Number(f.review_count) || 0, specs: f.specs.filter((s) => s.label.trim()), updated_at: new Date().toISOString() };
     const res = id ? await supabase.from("products").update(payload).eq("id", id).select("id").single() : await supabase.from("products").insert(payload).select("id").single();
-    if (res.error) { setBusy(false); return toast.error(res.error.message); }
+    if (res.error) { setBusy(false); toast.error(res.error.message); return; }
     const pid = res.data.id;
     await supabase.from("product_images").delete().eq("product_id", pid);
     const { error } = await supabase.from("product_images").insert(product_images.map((im, i) => ({ product_id: pid, url: im.url, storage_path: im.storage_path ?? null, position: i })));
