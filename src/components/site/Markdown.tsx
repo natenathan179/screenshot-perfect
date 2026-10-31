@@ -10,7 +10,7 @@ export function Markdown({ text }: { text: string }) {
           const [h, ...rest] = t.split("\n");
           return (
             <div key={i}>
-              <h2>{h.slice(3)}</h2>
+              <h2>{(h ?? "").slice(3)}</h2>
               {rest.length > 0 && <p>{rest.join(" ")}</p>}
             </div>
           );

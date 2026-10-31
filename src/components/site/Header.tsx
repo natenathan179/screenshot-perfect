@@ -74,15 +74,13 @@ export function Header() {
       <nav className="hidden bg-primary lg:block">
         <div className="container-x flex items-center">
           {NAV.map((n) => (
-            <Link
+            <NavLink
               key={n.label}
-              to={n.to}
-              params={"params" in n ? n.params : undefined}
-              activeOptions={{ exact: true }}
+              n={n}
               className="px-3.5 py-3.5 text-sm font-semibold text-primary-foreground/90 transition-colors hover:bg-navy-deep hover:text-primary-foreground data-[status=active]:bg-brand data-[status=active]:text-primary-foreground xl:px-4"
             >
               {n.label}
-            </Link>
+            </NavLink>
           ))}
         </div>
       </nav>
@@ -99,9 +97,9 @@ export function Header() {
               <button className="grid h-10 w-10 place-items-center rounded-r-md bg-primary text-primary-foreground" aria-label="Search"><Search className="h-4 w-4" /></button>
             </form>
             {NAV.map((n) => (
-              <Link key={n.label} to={n.to} params={"params" in n ? n.params : undefined} onClick={() => setOpen(false)} className="border-b border-border py-3 font-medium text-navy">
+              <NavLink key={n.label} n={n} onClick={() => setOpen(false)} className="border-b border-border py-3 font-medium text-navy">
                 {n.label}
-              </Link>
+              </NavLink>
             ))}
             <Link to="/reviews" onClick={() => setOpen(false)} className="border-b border-border py-3 font-medium text-navy">Reviews</Link>
             <Link to="/admin" onClick={() => setOpen(false)} className="py-3 font-medium text-navy">Admin login</Link>
@@ -110,4 +108,10 @@ export function Header() {
       )}
     </header>
   );
+}
+
+function NavLink({ n, className, onClick, children }: { n: (typeof NAV)[number]; className: string; onClick?: () => void; children: React.ReactNode }) {
+  if ("params" in n)
+    return <Link to="/category/$slug" params={n.params} className={className} onClick={onClick}>{children}</Link>;
+  return <Link to={n.to} activeOptions={{ exact: true }} className={className} onClick={onClick}>{children}</Link>;
 }

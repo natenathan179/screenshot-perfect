@@ -52,7 +52,7 @@ function CategoryPage() {
       <Catalog key={slug} products={data.filter((p) => p.category === slug)} lockCategory={slug} />
       <section className="bg-ice">
         <div className="container-x grid gap-6 py-12 md:grid-cols-3">
-          {EXTRA[slug].map((e) => (
+          {(EXTRA[slug] ?? []).map((e) => (
             <div key={e.h} className="rounded-lg bg-background p-6 shadow-card">
               <h2 className="text-lg font-extrabold text-navy">{e.h}</h2>
               <p className="mt-2 text-sm leading-relaxed text-charcoal">{e.p}</p>

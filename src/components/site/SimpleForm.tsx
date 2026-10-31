@@ -25,7 +25,7 @@ export function SimpleForm({ subject, fields, button }: { subject: string; field
     try {
       const payload: Record<string, string> = {};
       fields.forEach((f) => (payload[f.label] = (data[f.name] ?? "").trim() || "-"));
-      if (data.email) payload._replyto = data.email;
+      if (data["email"]) payload["_replyto"] = data["email"];
       await submitForm(subject, payload);
       setDone(true);
     } catch {

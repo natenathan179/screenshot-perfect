@@ -9,7 +9,7 @@ export function Footer() {
   const [busy, setBusy] = useState(false);
   const sub = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!/^\S+@\S+\.\S+$/.test(email)) return toast.error("Enter a valid email address");
+    if (!/^\S+@\S+\.\S+$/.test(email)) { toast.error("Enter a valid email address"); return; }
     setBusy(true);
     try {
       await submitForm("Newsletter signup - PeptideLabs", { email });
