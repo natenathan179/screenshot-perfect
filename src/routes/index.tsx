@@ -42,7 +42,7 @@ function Home() {
   return (
     <>
       <section className="relative overflow-hidden bg-ice">
-        <img src="/images/hero.jpg" alt="PeptideLabs high-purity research peptide vial" width={1920} height={912} className="absolute inset-0 h-full w-full object-cover object-right" />
+        <img src="/images/hero.jpg" alt="PeptideLabs high-purity research peptide vial" width={1920} height={912} className="absolute inset-0 h-full w-full object-cover object-right opacity-35 md:opacity-100" />
         <div className="absolute inset-0 bg-hero-fade" />
         <div className="relative container-x py-16 md:py-24">
           <p className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-brand">Premium Peptides & Research Compounds</p>
