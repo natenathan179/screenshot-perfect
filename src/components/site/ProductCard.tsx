@@ -27,7 +27,7 @@ export function ProductCard({ p }: { p: Product }) {
     <div className="group flex flex-col rounded-lg border border-border bg-card p-3 transition-shadow hover:shadow-card">
       <Link to="/product/$slug" params={{ slug: p.slug }} className="relative block overflow-hidden rounded-md bg-muted">
         {badge && <span className={`absolute left-2 top-2 z-10 rounded px-2 py-0.5 text-[11px] font-semibold ${badge === "Bestseller" ? "bg-primary text-primary-foreground" : "bg-brand text-accent-foreground"}`}>{badge}</span>}
-        <img src={img} alt={p.name} loading="lazy" width={400} height={400} className="aspect-square w-full object-contain transition-transform duration-300 group-hover:scale-105" />
+        <img src={img} alt={[...(p.product_images ?? [])].sort((a, b) => a.position - b.position)[0]?.alt_text ?? p.name} loading="lazy" width={400} height={400} className="aspect-square w-full object-contain transition-transform duration-300 group-hover:scale-105" />
       </Link>
       <div className="mt-3 flex flex-1 flex-col">
         <Link to="/product/$slug" params={{ slug: p.slug }} className="line-clamp-1 font-semibold text-navy hover:text-brand">{p.name}</Link>
