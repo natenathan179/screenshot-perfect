@@ -20,7 +20,7 @@ function Login() {
     setErr("");
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
-    if (error) return setErr(error.message);
+    if (error) { setErr(error.message); return; }
     nav({ to: "/admin" });
   };
   return (

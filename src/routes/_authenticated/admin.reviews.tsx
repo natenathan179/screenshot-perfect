@@ -26,11 +26,11 @@ function AdminReviews() {
   const refresh = () => { qc.invalidateQueries({ queryKey: ["admin"] }); qc.invalidateQueries({ queryKey: ["reviews"] }); };
   const save = async () => {
     if (!edit) return;
-    if (!edit.name.trim() || !edit.body.trim()) return toast.error("Name and review text are required");
+    if (!edit.name.trim() || !edit.body.trim()) { toast.error("Name and review text are required"); return; }
     const { id, ...rest } = edit;
     const payload = { ...rest, rating: Math.min(5, Math.max(1, Number(rest.rating) || 5)), avatar_url: rest.avatar_url || null };
     const { error } = id ? await supabase.from("reviews").update(payload).eq("id", id) : await supabase.from("reviews").insert(payload);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Review saved");
     setEdit(null);
     refresh();
@@ -38,7 +38,7 @@ function AdminReviews() {
   const del = async (id: string) => {
     if (!confirm("Delete this review?")) return;
     const { error } = await supabase.from("reviews").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     refresh();
   };
   const inp = "h-10 w-full rounded-md border border-input bg-background px-3 text-sm";

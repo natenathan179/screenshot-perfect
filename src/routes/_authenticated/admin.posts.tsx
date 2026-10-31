@@ -28,13 +28,13 @@ function AdminPosts() {
 
   const save = async () => {
     if (!edit) return;
-    if (!edit.title.trim()) return toast.error("Title is required");
+    if (!edit.title.trim()) { toast.error("Title is required"); return; }
     setBusy(true);
     const { id, tags, ...rest } = edit;
     const payload = { ...rest, slug: slugify(edit.slug || edit.title), tags: tags.split(",").map((t) => t.trim()).filter(Boolean), cover_url: edit.cover_url || null };
     const { error } = id ? await supabase.from("posts").update(payload).eq("id", id) : await supabase.from("posts").insert(payload);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Post saved");
     setEdit(null);
     refresh();
@@ -42,7 +42,7 @@ function AdminPosts() {
   const del = async (id: string) => {
     if (!confirm("Delete this post?")) return;
     const { error } = await supabase.from("posts").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     refresh();
   };
   const inp = "h-10 w-full rounded-md border border-input bg-background px-3 text-sm";

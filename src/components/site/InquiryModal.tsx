@@ -42,7 +42,7 @@ export function InquiryModal({
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const raw = Object.fromEntries(fd.entries()) as Record<string, string>;
-    const parsed = schema.safeParse({ ...raw, confirm: raw.confirm === "on" });
+    const parsed = schema.safeParse({ ...raw, confirm: raw["confirm"] === "on" });
     if (!parsed.success) {
       const errs: Record<string, string> = {};
       parsed.error.issues.forEach((i) => (errs[String(i.path[0])] = i.message));

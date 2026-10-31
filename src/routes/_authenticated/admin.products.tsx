@@ -35,7 +35,7 @@ function AdminProducts() {
   const del = async (id: string, name: string) => {
     if (!confirm(`Delete ${name}?`)) return;
     const { error } = await supabase.from("products").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Product deleted");
     refresh();
   };
@@ -97,8 +97,8 @@ function ProductForm({ row, onClose, onSaved }: { row: Row; onClose: () => void;
   };
 
   const save = async () => {
-    if (!f.name.trim()) return toast.error("Name is required");
-    if (!f.product_images.length) return toast.error("Upload at least one image");
+    if (!f.name.trim()) { toast.error("Name is required"); return; }
+    if (!f.product_images.length) { toast.error("Upload at least one image"); return; }
     setBusy(true);
     const { id, product_images, ...rest } = f;
     const payload = { ...rest, slug: slugify(f.slug || f.name), price: Number(f.price) || 0, rating: Number(f.rating) || 5, review_count: Number(f.review_count) || 0, specs: f.specs.filter((s) => s.label.trim()), updated_at: new Date().toISOString() };
@@ -108,7 +108,7 @@ function ProductForm({ row, onClose, onSaved }: { row: Row; onClose: () => void;
     await supabase.from("product_images").delete().eq("product_id", pid);
     const { error } = await supabase.from("product_images").insert(product_images.map((im, i) => ({ product_id: pid, url: im.url, storage_path: im.storage_path ?? null, position: i })));
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Product saved");
     onSaved();
   };
@@ -159,7 +159,7 @@ function ProductForm({ row, onClose, onSaved }: { row: Row; onClose: () => void;
                 <div key={im.url} className="relative">
                   <img src={im.url} alt="" className={`h-24 w-24 rounded-md border-2 bg-muted object-contain ${i === 0 ? "border-brand" : "border-border"}`} />
                   <button aria-label="Remove image" onClick={() => set("product_images", f.product_images.filter((_, j) => j !== i))} className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-destructive text-destructive-foreground"><X className="h-3 w-3" /></button>
-                  {i > 0 && <button onClick={() => { const a = [...f.product_images]; const [m] = a.splice(i, 1); a.unshift(m); set("product_images", a); }} className="mt-1 block w-24 text-center text-[11px] text-brand">Make main</button>}
+                  {i > 0 && <button onClick={() => { const a = [...f.product_images]; const [m] = a.splice(i, 1); if (m) a.unshift(m); set("product_images", a); }} className="mt-1 block w-24 text-center text-[11px] text-brand">Make main</button>}
                 </div>
               ))}
               <label className="grid h-24 w-24 cursor-pointer place-items-center rounded-md border-2 border-dashed border-border text-xs text-muted-foreground hover:border-brand">
