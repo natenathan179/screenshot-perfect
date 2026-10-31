@@ -14,12 +14,40 @@ export const Route = createFileRoute("/product/$slug")({
     const p = await context.queryClient.ensureQueryData(productQuery(params.slug));
     if (!p) throw notFound();
     await context.queryClient.ensureQueryData(productsQuery());
-    return { name: p.name, desc: p.short_description ?? p.subtitle ?? "", price: p.price };
+    const img = [...(p.product_images ?? [])].sort((a, b) => a.position - b.position)[0]?.url;
+    return { name: p.name, slug: p.slug, title: p.seo_title, desc: p.seo_description ?? p.short_description ?? p.subtitle ?? "", keywords: p.keywords, price: p.price, image: img, inStock: p.in_stock, rating: p.rating, reviews: p.review_count, sku: p.size };
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Product unavailable | PeptideLabs" }, { name: "robots", content: "noindex" }] };
-    const t = `${loaderData.name} for Research | ${money(loaderData.price)} | PeptideLabs`;
-    return { meta: [{ title: t }, { name: "description", content: loaderData.desc }, { property: "og:title", content: t }, { property: "og:description", content: loaderData.desc }, { property: "og:type", content: "product" }, { name: "twitter:card", content: "summary_large_image" }] };
+    const t = loaderData.title ?? `${loaderData.name} for Research | ${money(loaderData.price)} | PeptideLabs`;
+    return {
+      meta: [
+        { title: t },
+        { name: "description", content: loaderData.desc },
+        ...(loaderData.keywords ? [{ name: "keywords", content: loaderData.keywords }] : []),
+        { property: "og:title", content: t },
+        { property: "og:description", content: loaderData.desc },
+        { property: "og:type", content: "product" },
+        { property: "og:url", content: `/product/${loaderData.slug}` },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+      links: [{ rel: "canonical", href: `/product/${loaderData.slug}` }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: loaderData.name,
+            description: loaderData.desc,
+            image: loaderData.image,
+            brand: { "@type": "Brand", name: "PeptideLabs" },
+            offers: { "@type": "Offer", priceCurrency: "USD", price: Number(loaderData.price).toFixed(2), availability: loaderData.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock" },
+            aggregateRating: { "@type": "AggregateRating", ratingValue: loaderData.rating, reviewCount: loaderData.reviews },
+          }),
+        },
+      ],
+    };
   },
   notFoundComponent: () => (
     <div className="container-x py-20 text-center">
@@ -59,13 +87,13 @@ function ProductPage() {
       <section className="container-x grid gap-10 pb-12 lg:grid-cols-2">
         <div>
           <div className="overflow-hidden rounded-xl border border-border bg-muted">
-            <img src={img} alt={p.name} width={800} height={800} className="aspect-square w-full object-contain" />
+            <img src={img} alt={images[active]?.alt_text ?? images[0]?.alt_text ?? p.name} width={800} height={800} className="aspect-square w-full object-contain" />
           </div>
           {images.length > 1 && (
             <div className="mt-3 grid grid-cols-5 gap-2">
               {images.map((im, i) => (
                 <button key={im.id} onClick={() => setActive(i)} className={`overflow-hidden rounded-md border-2 ${i === active ? "border-brand" : "border-border"}`}>
-                  <img src={im.url} alt={`${p.name} view ${i + 1}`} className="aspect-square w-full object-contain" />
+                  <img src={im.url} alt={im.alt_text ?? `${p.name} view ${i + 1}`} className="aspect-square w-full object-contain" />
                 </button>
               ))}
             </div>

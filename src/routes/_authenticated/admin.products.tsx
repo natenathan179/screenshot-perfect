@@ -10,10 +10,11 @@ import { slugify, uploadImage } from "@/lib/admin";
 
 export const Route = createFileRoute("/_authenticated/admin/products")({ component: AdminProducts });
 
-type Img = { id?: string; url: string; storage_path?: string | null; position: number };
+type Img = { id?: string; url: string; storage_path?: string | null; position: number; alt_text?: string | null };
 type Row = {
   id?: string; name: string; slug: string; category: string; subtitle: string; price: number; size: string; purity: string; form: string; storage: string;
   cas_number: string; short_description: string; description: string; specs: { label: string; value: string }[];
+  seo_title?: string | null; seo_description?: string | null; keywords?: string | null;
   is_featured: boolean; is_bestseller: boolean; is_new: boolean; in_stock: boolean; rating: number; review_count: number; product_images: Img[];
 };
 const empty: Row = { name: "", slug: "", category: "peptides", subtitle: "", price: 0, size: "", purity: "", form: "", storage: "", cas_number: "", short_description: "", description: "", specs: [], is_featured: false, is_bestseller: false, is_new: true, in_stock: true, rating: 5, review_count: 0, product_images: [] };
@@ -106,7 +107,7 @@ function ProductForm({ row, onClose, onSaved }: { row: Row; onClose: () => void;
     if (res.error) { setBusy(false); toast.error(res.error.message); return; }
     const pid = res.data.id;
     await supabase.from("product_images").delete().eq("product_id", pid);
-    const { error } = await supabase.from("product_images").insert(product_images.map((im, i) => ({ product_id: pid, url: im.url, storage_path: im.storage_path ?? null, position: i })));
+    const { error } = await supabase.from("product_images").insert(product_images.map((im, i) => ({ product_id: pid, url: im.url, storage_path: im.storage_path ?? null, position: i, alt_text: im.alt_text || `Buy ${f.name} ${f.size} research peptide vial - PeptideLabs${i ? ` (view ${i + 1})` : ""}` })));
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Product saved");
@@ -136,6 +137,9 @@ function ProductForm({ row, onClose, onSaved }: { row: Row; onClose: () => void;
           <L t="Review count"><input type="number" className={inp} value={f.review_count} onChange={(e) => set("review_count", Number(e.target.value))} /></L>
           <L t="Short description" full><textarea rows={2} className={`${inp} h-auto py-2`} value={f.short_description ?? ""} onChange={(e) => set("short_description", e.target.value)} /></L>
           <L t="Full description (use ## for headings, blank line between paragraphs)" full><textarea rows={8} className={`${inp} h-auto py-2`} value={f.description ?? ""} onChange={(e) => set("description", e.target.value)} /></L>
+          <L t="SEO title (Google/Bing)" full><input className={inp} value={f.seo_title ?? ""} onChange={(e) => set("seo_title", e.target.value)} /></L>
+          <L t="SEO meta description" full><textarea rows={2} className={`${inp} h-auto py-2`} value={f.seo_description ?? ""} onChange={(e) => set("seo_description", e.target.value)} /></L>
+          <L t="SEO keywords (comma separated)" full><input className={inp} value={f.keywords ?? ""} onChange={(e) => set("keywords", e.target.value)} /></L>
           <div className="flex flex-wrap gap-4 text-sm sm:col-span-2">
             {(["is_featured", "is_bestseller", "is_new", "in_stock"] as const).map((k) => (
               <label key={k} className="flex items-center gap-2"><input type="checkbox" checked={f[k]} onChange={(e) => set(k, e.target.checked)} />{{ is_featured: "Featured", is_bestseller: "Bestseller", is_new: "New arrival", in_stock: "In stock" }[k]}</label>

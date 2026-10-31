@@ -18,7 +18,7 @@ function publicClient() {
   });
 }
 
-const PRODUCT_SELECT = "*, product_images(id,url,position)";
+const PRODUCT_SELECT = "*, product_images(id,url,position,alt_text)";
 
 export const listProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await publicClient()
