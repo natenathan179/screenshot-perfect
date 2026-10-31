@@ -14,9 +14,15 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as BestSellersRouteImport } from './routes/best-sellers'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as NewArrivalsRouteImport } from './routes/new-arrivals'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RegulatoryRouteImport } from './routes/regulatory'
+import { Route as ReturnsRouteImport } from './routes/returns'
 import { Route as ReviewsRouteImport } from './routes/reviews'
+import { Route as ShippingRouteImport } from './routes/shipping'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrackOrderRouteImport } from './routes/track-order'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
@@ -49,9 +55,29 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewArrivalsRoute = NewArrivalsRouteImport.update({
   id: '/new-arrivals',
   path: '/new-arrivals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegulatoryRoute = RegulatoryRouteImport.update({
+  id: '/regulatory',
+  path: '/regulatory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnsRoute = ReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReviewsRoute = ReviewsRouteImport.update({
@@ -59,9 +85,19 @@ const ReviewsRoute = ReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShippingRoute = ShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrackOrderRoute = TrackOrderRouteImport.update({
@@ -101,9 +137,15 @@ export interface FileRoutesByFullPath {
   '/best-sellers': typeof BestSellersRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/new-arrivals': typeof NewArrivalsRoute
+  '/privacy': typeof PrivacyRoute
+  '/regulatory': typeof RegulatoryRoute
+  '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
+  '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
   '/wishlist': typeof WishlistRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -117,9 +159,15 @@ export interface FileRoutesByTo {
   '/best-sellers': typeof BestSellersRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/new-arrivals': typeof NewArrivalsRoute
+  '/privacy': typeof PrivacyRoute
+  '/regulatory': typeof RegulatoryRoute
+  '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
+  '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
   '/wishlist': typeof WishlistRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -134,9 +182,15 @@ export interface FileRoutesById {
   '/best-sellers': typeof BestSellersRoute
   '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
   '/new-arrivals': typeof NewArrivalsRoute
+  '/privacy': typeof PrivacyRoute
+  '/regulatory': typeof RegulatoryRoute
+  '/returns': typeof ReturnsRoute
   '/reviews': typeof ReviewsRoute
+  '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
   '/track-order': typeof TrackOrderRoute
   '/wishlist': typeof WishlistRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -152,9 +206,15 @@ export interface FileRouteTypes {
     | '/best-sellers'
     | '/cart'
     | '/contact'
+    | '/faq'
     | '/new-arrivals'
+    | '/privacy'
+    | '/regulatory'
+    | '/returns'
     | '/reviews'
+    | '/shipping'
     | '/shop'
+    | '/terms'
     | '/track-order'
     | '/wishlist'
     | '/blog/$slug'
@@ -168,9 +228,15 @@ export interface FileRouteTypes {
     | '/best-sellers'
     | '/cart'
     | '/contact'
+    | '/faq'
     | '/new-arrivals'
+    | '/privacy'
+    | '/regulatory'
+    | '/returns'
     | '/reviews'
+    | '/shipping'
     | '/shop'
+    | '/terms'
     | '/track-order'
     | '/wishlist'
     | '/blog/$slug'
@@ -184,9 +250,15 @@ export interface FileRouteTypes {
     | '/best-sellers'
     | '/cart'
     | '/contact'
+    | '/faq'
     | '/new-arrivals'
+    | '/privacy'
+    | '/regulatory'
+    | '/returns'
     | '/reviews'
+    | '/shipping'
     | '/shop'
+    | '/terms'
     | '/track-order'
     | '/wishlist'
     | '/blog/$slug'
@@ -201,9 +273,15 @@ export interface RootRouteChildren {
   BestSellersRoute: typeof BestSellersRoute
   CartRoute: typeof CartRoute
   ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
   NewArrivalsRoute: typeof NewArrivalsRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RegulatoryRoute: typeof RegulatoryRoute
+  ReturnsRoute: typeof ReturnsRoute
   ReviewsRoute: typeof ReviewsRoute
+  ShippingRoute: typeof ShippingRoute
   ShopRoute: typeof ShopRoute
+  TermsRoute: typeof TermsRoute
   TrackOrderRoute: typeof TrackOrderRoute
   WishlistRoute: typeof WishlistRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -249,11 +327,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/new-arrivals': {
       id: '/new-arrivals'
       path: '/new-arrivals'
       fullPath: '/new-arrivals'
       preLoaderRoute: typeof NewArrivalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regulatory': {
+      id: '/regulatory'
+      path: '/regulatory'
+      fullPath: '/regulatory'
+      preLoaderRoute: typeof RegulatoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/returns': {
+      id: '/returns'
+      path: '/returns'
+      fullPath: '/returns'
+      preLoaderRoute: typeof ReturnsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reviews': {
@@ -263,11 +369,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shipping': {
+      id: '/shipping'
+      path: '/shipping'
+      fullPath: '/shipping'
+      preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/track-order': {
@@ -321,9 +441,15 @@ const rootRouteChildren: RootRouteChildren = {
   BestSellersRoute: BestSellersRoute,
   CartRoute: CartRoute,
   ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
   NewArrivalsRoute: NewArrivalsRoute,
+  PrivacyRoute: PrivacyRoute,
+  RegulatoryRoute: RegulatoryRoute,
+  ReturnsRoute: ReturnsRoute,
   ReviewsRoute: ReviewsRoute,
+  ShippingRoute: ShippingRoute,
   ShopRoute: ShopRoute,
+  TermsRoute: TermsRoute,
   TrackOrderRoute: TrackOrderRoute,
   WishlistRoute: WishlistRoute,
   BlogSlugRoute: BlogSlugRoute,
