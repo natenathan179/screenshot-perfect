@@ -15,6 +15,13 @@
       "when": 1793481219454,
       "tag": "0001_media_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793481434243,
+      "tag": "0002_seed_catalog",
+      "breakpoints": true
     }
   ]
 }
