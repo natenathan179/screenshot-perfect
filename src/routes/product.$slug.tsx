@@ -140,7 +140,7 @@ function ProductPage() {
               <h2>Quality & Testing</h2>
               <p>Each lot of {p.name} is verified by HPLC for purity and mass spectrometry for identity. Our minimum release specification is {p.purity ?? "batch dependent"}. Chromatograms, lot numbers and the full Certificate of Analysis are available on request through the quote form.</p>
               <h2>Handling & Storage</h2>
-              <p>{powder ? "Store lyophilised powder at -20°C, protected from light and moisture. Allow the vial to reach room temperature before opening. Once reconstituted with bacteriostatic water, store at 2–8°C and use within the timeframe defined by your protocol." : `Store at ${p.storage ?? "controlled room temperature"}. Keep the container tightly closed and away from direct light and heat sources.`}</p>
+              <p>{powder ? "Store lyophilised powder at -20°C, protected from light and moisture. Allow the vial to reach room temperature before opening. Once reconstituted with bacteriostatic water, store at 2–8°C and use within the timeframe defined by your protocol." : `${p.storage ?? "Store at controlled room temperature"}. Keep the container tightly closed and away from direct light and heat sources.`}</p>
               <h2>Ordering & Availability</h2>
               <p>Prices are indicative. Submit an inquiry to receive a formal quote, regional availability and lead time. We ship to the United States, United Kingdom, Europe and international markets where the product may legally be supplied.</p>
               <h2>Compliance Notice</h2>
