@@ -70,7 +70,8 @@ function ProductPage() {
   if (!p) return null;
   const img = images[active]?.url ?? images[0]?.url ?? "/images/products/vial-blue.jpg";
   const main = images[0]?.url ?? img;
-  const quoteOnly = p.category === "steroids" || !p.in_stock;
+  const infoOnly = p.category === "steroids";
+  const quoteOnly = !infoOnly && !p.in_stock;
   const specs = (Array.isArray(p.specs) ? p.specs : []) as { label: string; value: string }[];
   const related = all.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 4);
   const powder = (p.form ?? "").toLowerCase().includes("powder");
@@ -113,15 +114,16 @@ function ProductPage() {
             ))}
           </dl>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            {!quoteOnly && (
+            {!infoOnly && !quoteOnly && (
               <>
                 <input type="number" min={1} value={qty} onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))} aria-label="Quantity" className="h-12 w-20 rounded-md border border-input px-3" />
                 <button onClick={() => { add({ id: p.id, slug: p.slug, name: p.name, price: Number(p.price), size: p.size, image: main }, qty); toast.success(`${p.name} added to cart`); }} className="h-12 flex-1 rounded-md bg-primary px-6 font-semibold text-primary-foreground hover:bg-navy-deep">Add to Cart</button>
               </>
             )}
-            <button onClick={() => setOpen(true)} className="h-12 flex-1 rounded-md bg-brand px-6 font-semibold text-accent-foreground hover:opacity-90">Request Quote</button>
+            {!infoOnly && <button onClick={() => setOpen(true)} className="h-12 flex-1 rounded-md bg-brand px-6 font-semibold text-accent-foreground hover:opacity-90">Request Quote</button>}
             <button onClick={() => toggleWish(p.slug)} aria-label="Toggle wishlist" className="grid h-12 w-12 place-items-center rounded-md border border-border"><Heart className={`h-5 w-5 ${wishlist.includes(p.slug) ? "fill-brand text-brand" : "text-navy"}`} /></button>
           </div>
+          {infoOnly && <p className="mt-3 rounded-md bg-muted p-3 text-xs text-muted-foreground">Informational listing only. This compound is prescription-only or controlled in many jurisdictions and is not available for purchase or quotation through this website.</p>}
           {quoteOnly && <p className="mt-3 rounded-md bg-muted p-3 text-xs text-muted-foreground">This product is supplied on a quote basis only. Our compliance team will verify eligibility for your jurisdiction before confirming an order.</p>}
           <div className="mt-6 grid grid-cols-2 gap-3 text-xs text-charcoal sm:grid-cols-4">
             {[[FlaskConical, "3rd-party tested"], [FileCheck2, "COA included"], [Truck, "Discreet shipping"], [ShieldCheck, "Secure inquiry"]].map(([I, t]) => { const Icon = I as typeof Truck; return <span key={t as string} className="flex items-center gap-1.5"><Icon className="h-4 w-4 text-brand" />{t as string}</span>; })}
@@ -138,7 +140,7 @@ function ProductPage() {
               <h2>Quality & Testing</h2>
               <p>Each lot of {p.name} is verified by HPLC for purity and mass spectrometry for identity. Our minimum release specification is {p.purity ?? "batch dependent"}. Chromatograms, lot numbers and the full Certificate of Analysis are available on request through the quote form.</p>
               <h2>Handling & Storage</h2>
-              <p>{powder ? "Store lyophilised powder at -20°C, protected from light and moisture. Allow the vial to reach room temperature before opening. Once reconstituted with bacteriostatic water, store at 2–8°C and use within the timeframe defined by your protocol." : `Store at ${p.storage ?? "controlled room temperature"}. Keep the container tightly closed and away from direct light and heat sources.`}</p>
+              <p>{powder ? "Store lyophilised powder at -20°C, protected from light and moisture. Allow the vial to reach room temperature before opening. Once reconstituted with bacteriostatic water, store at 2–8°C and use within the timeframe defined by your protocol." : `${p.storage ?? "Store at controlled room temperature"}. Keep the container tightly closed and away from direct light and heat sources.`}</p>
               <h2>Ordering & Availability</h2>
               <p>Prices are indicative. Submit an inquiry to receive a formal quote, regional availability and lead time. We ship to the United States, United Kingdom, Europe and international markets where the product may legally be supplied.</p>
               <h2>Compliance Notice</h2>
