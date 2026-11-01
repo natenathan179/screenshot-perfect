@@ -21,7 +21,8 @@ export function ProductCard({ p }: { p: Product }) {
   const [open, setOpen] = useState(false);
   const img = productImage(p);
   const badge = p.is_bestseller ? "Bestseller" : p.is_featured ? "Featured" : p.is_new ? "New" : null;
-  const quoteOnly = p.category === "steroids" || !p.in_stock;
+  const infoOnly = p.category === "steroids";
+  const quoteOnly = !infoOnly && !p.in_stock;
   const wished = wishlist.includes(p.slug);
   return (
     <div className="group flex flex-col rounded-lg border border-border bg-card p-3 transition-shadow hover:shadow-card">
@@ -35,7 +36,9 @@ export function ProductCard({ p }: { p: Product }) {
         <p className="mt-2 font-display text-lg font-bold text-navy">{money(p.price)}</p>
         <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Stars rating={p.rating} /> ({p.review_count})</div>
         <div className="mt-3 flex items-center gap-2">
-          {quoteOnly ? (
+          {infoOnly ? (
+            <span className="flex h-9 flex-1 items-center justify-center rounded-md bg-muted text-xs font-semibold text-muted-foreground">Informational only</span>
+          ) : quoteOnly ? (
             <button onClick={() => setOpen(true)} className="h-9 flex-1 rounded-md bg-brand text-sm font-semibold text-accent-foreground hover:opacity-90">Request Quote</button>
           ) : (
             <button
