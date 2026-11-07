@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contact")({
       <div className="container-x grid gap-10 py-12 lg:grid-cols-[20rem_minmax(0,1fr)]">
         <aside className="space-y-4">
           {[
-            [Mail, "Email", "support@peptidelabs.com"],
+            [Mail, "Email", "sales@peptidelabs.com"],
             [Phone, "Phone", "+1 (800) 555-0123"],
             [Clock, "Hours", "Mon–Fri, 9:00–18:00 (GMT/EST)"],
             [MapPin, "Serving", "United States • United Kingdom • Europe • International"],
