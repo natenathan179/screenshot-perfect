@@ -4,8 +4,11 @@ import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
 
 function publicClient() {
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-  return createClient<Database>(process.env["SUPABASE_URL"]!, key, {
+  // Runtime env may be absent on deployed workers; fall back to the build-time public values.
+  const url = process.env["SUPABASE_URL"] || import.meta.env.VITE_SUPABASE_URL;
+  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (!url || !key) throw new Error("Backend configuration missing (URL/publishable key).");
+  return createClient<Database>(url, key, {
     auth: { persistSession: false, autoRefreshToken: false, storage: undefined },
     global: {
       fetch: (input, init) => {
