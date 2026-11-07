@@ -3,7 +3,7 @@ import { Heart, Star } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useCart } from "@/lib/cart";
-import { categoryName, money, productImage, type Product } from "@/lib/queries";
+import { categoryName, isInfoOnly, money, productImage, subcategoryName, type Product } from "@/lib/queries";
 import { InquiryModal } from "./InquiryModal";
 
 export function Stars({ rating, className = "h-3.5 w-3.5" }: { rating: number; className?: string }) {
@@ -21,7 +21,7 @@ export function ProductCard({ p }: { p: Product }) {
   const [open, setOpen] = useState(false);
   const img = productImage(p);
   const badge = p.is_bestseller ? "Bestseller" : p.is_featured ? "Featured" : p.is_new ? "New" : null;
-  const infoOnly = p.category === "steroids";
+  const infoOnly = isInfoOnly(p.category);
   const quoteOnly = !infoOnly && !p.in_stock;
   const wished = wishlist.includes(p.slug);
   return (
@@ -32,7 +32,7 @@ export function ProductCard({ p }: { p: Product }) {
       </Link>
       <div className="mt-3 flex flex-1 flex-col">
         <Link to="/product/$slug" params={{ slug: p.slug }} className="line-clamp-1 font-semibold text-navy hover:text-brand">{p.name}</Link>
-        <p className="text-xs text-muted-foreground">{categoryName(p.category)} | {p.size}</p>
+        <p className="text-xs text-muted-foreground">{p.category === "research" ? categoryName(p.category) : subcategoryName(p.category, p.subcategory)} | {p.size}</p>
         <p className="mt-2 font-display text-lg font-bold text-navy">{money(p.price)}</p>
         <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Stars rating={p.rating} /> ({p.review_count})</div>
         <div className="mt-3 flex items-center gap-2">

@@ -67,14 +67,14 @@ function Home() {
         </div>
       </section>
 
-      <section className="container-x grid gap-5 py-12 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="container-x grid gap-5 py-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {CATEGORIES.map((c) => (
           <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }} className="group overflow-hidden rounded-lg border border-border bg-ice transition-shadow hover:shadow-card">
             <img src={c.image} alt={c.name} loading="lazy" width={1088} height={608} className="aspect-[16/8] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
             <div className="p-5">
               <h3 className="text-xl font-extrabold uppercase text-navy">{c.name}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{c.tagline}</p>
-              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Shop {c.name} <ArrowRight className="h-4 w-4" /></span>
+              <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Shop now <ArrowRight className="h-4 w-4" /></span>
             </div>
           </Link>
         ))}

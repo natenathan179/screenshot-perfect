@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
+import { classify } from "./taxonomy";
 
 function publicClient() {
   // Runtime env may be absent on deployed workers; fall back to the build-time public values.
@@ -23,13 +24,16 @@ function publicClient() {
 
 const PRODUCT_SELECT = "*, product_images(id,url,position,alt_text)";
 
+// Attach the storefront category/subcategory derived from the product name (see taxonomy.ts).
+const withTaxonomy = <T extends { name: string; category: string }>(p: T) => ({ ...p, ...classify(p) });
+
 export const listProducts = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await publicClient()
     .from("products")
     .select(PRODUCT_SELECT)
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return data ?? [];
+  return (data ?? []).map(withTaxonomy);
 });
 
 export const getProduct = createServerFn({ method: "GET" })
@@ -41,7 +45,7 @@ export const getProduct = createServerFn({ method: "GET" })
       .eq("slug", data.slug)
       .maybeSingle();
     if (error) throw new Error(error.message);
-    return p;
+    return p ? withTaxonomy(p) : p;
   });
 
 export const listPosts = createServerFn({ method: "GET" }).handler(async () => {

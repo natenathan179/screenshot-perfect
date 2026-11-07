@@ -9,6 +9,7 @@ const NAV = [
   { to: "/shop", label: "Shop All" },
   { to: "/category/$slug", params: { slug: "peptides" }, label: "Peptides" },
   { to: "/category/$slug", params: { slug: "steroids" }, label: "Steroids" },
+  { to: "/category/$slug", params: { slug: "ancillaries" }, label: "Ancillaries" },
   { to: "/category/$slug", params: { slug: "biotech" }, label: "Biotechnology" },
   { to: "/category/$slug", params: { slug: "research" }, label: "Research Products" },
   { to: "/new-arrivals", label: "New Arrivals" },
@@ -77,7 +78,7 @@ export function Header() {
             <NavLink
               key={n.label}
               n={n}
-              className="px-3.5 py-3.5 text-sm font-semibold text-primary-foreground/90 transition-colors hover:bg-navy-deep hover:text-primary-foreground data-[status=active]:bg-brand data-[status=active]:text-primary-foreground xl:px-4"
+              className="whitespace-nowrap px-2 py-3.5 text-[13px] font-semibold text-primary-foreground/90 transition-colors hover:bg-navy-deep hover:text-primary-foreground data-[status=active]:bg-brand data-[status=active]:text-primary-foreground xl:px-3 xl:text-sm 2xl:px-4"
             >
               {n.label}
             </NavLink>

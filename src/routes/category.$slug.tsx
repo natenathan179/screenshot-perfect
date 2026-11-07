@@ -1,6 +1,7 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
+import { z } from "zod";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { CATEGORIES, productsQuery } from "@/lib/queries";
+import { CATEGORIES, productsQuery, subcategoryName } from "@/lib/queries";
 import { Catalog } from "@/components/site/Catalog";
 import { PageHero } from "@/components/site/PageHero";
 
@@ -15,6 +16,11 @@ const EXTRA: Record<string, { h: string; p: string }[]> = {
     { h: "Reference standards", p: "Our steroid compounds are intended as analytical reference materials for chromatography, toxicology screening and pharmacology studies." },
     { h: "Quote-only ordering", p: "Products in this category cannot be added to cart. Submit a quote request and our compliance team will review your documentation." },
   ],
+  ancillaries: [
+    { h: "Prescription-only", p: "Aromatase inhibitors, SERMs, PDE5 inhibitors, clenbuterol and thyroid hormone are prescription-only medicines in most jurisdictions. Listings here are informational and cannot be purchased or quoted online." },
+    { h: "Research context", p: "These compounds are studied alongside endocrine research to examine oestrogen modulation, HPTA recovery, vascular function and thermogenesis." },
+    { h: "Reference data", p: "Each listing summarises molecular identity, typical presentation and storage so researchers can compare reference materials." },
+  ],
   biotech: [
     { h: "Cold-chain handling", p: "Growth factors and glycoprotein hormones are shipped with temperature control to protect bioactivity." },
     { h: "Applications", p: "Common uses include cell culture supplementation, receptor binding assays, ELISA calibration and endocrinology research." },
@@ -28,14 +34,16 @@ const EXTRA: Record<string, { h: string; p: string }[]> = {
 };
 
 export const Route = createFileRoute("/category/$slug")({
-  loader: async ({ context, params }) => {
+  validateSearch: (s) => z.object({ sub: z.string().max(60).optional() }).parse(s),
+  loaderDeps: ({ search }) => ({ sub: search.sub }),
+  loader: async ({ context, params, deps }) => {
     const cat = CATEGORIES.find((c) => c.slug === params.slug);
     if (!cat) throw notFound();
     await context.queryClient.ensureQueryData(productsQuery());
-    return { name: cat.name, intro: cat.intro };
+    return { name: cat.name, intro: cat.intro, sub: deps.sub ? subcategoryName(cat.slug, deps.sub) : undefined };
   },
   head: ({ loaderData }) => {
-    const t = loaderData ? `${loaderData.name} | Buy Research ${loaderData.name} | PeptideLabs` : "Category | PeptideLabs";
+    const t = !loaderData ? "Category | PeptideLabs" : loaderData.sub ? `${loaderData.sub} – ${loaderData.name} | PeptideLabs` : `${loaderData.name} | Buy Research ${loaderData.name} | PeptideLabs`;
     const d = loaderData?.intro.slice(0, 155) ?? "Browse PeptideLabs research products.";
     return { meta: [{ title: t }, { name: "description", content: d }, { property: "og:title", content: t }, { property: "og:description", content: d }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] };
   },
@@ -46,10 +54,13 @@ function CategoryPage() {
   const { slug } = Route.useParams();
   const cat = CATEGORIES.find((c) => c.slug === slug)!;
   const { data } = useSuspenseQuery(productsQuery());
+  const { sub } = Route.useSearch();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const setSub = (next: string | undefined) => navigate({ search: { sub: next }, replace: true, resetScroll: false });
   return (
     <>
       <PageHero title={cat.name} subtitle={cat.intro} image={cat.image} />
-      <Catalog key={slug} products={data.filter((p) => p.category === slug)} lockCategory={slug} />
+      <Catalog key={slug} products={data.filter((p) => p.category === slug)} lockCategory={slug} sub={sub} onSubChange={setSub} />
       <section className="bg-ice">
         <div className="container-x grid gap-6 py-12 md:grid-cols-3">
           {(EXTRA[slug] ?? []).map((e) => (

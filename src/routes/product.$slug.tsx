@@ -3,7 +3,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ChevronRight, FileCheck2, FlaskConical, Heart, ShieldCheck, Truck } from "lucide-react";
-import { categoryName, money, productQuery, productsQuery } from "@/lib/queries";
+import { categoryName, isInfoOnly, money, productQuery, productsQuery, subcategoryName } from "@/lib/queries";
 import { useCart } from "@/lib/cart";
 import { InquiryModal } from "@/components/site/InquiryModal";
 import { ProductCard, Stars } from "@/components/site/ProductCard";
@@ -70,10 +70,14 @@ function ProductPage() {
   if (!p) return null;
   const img = images[active]?.url ?? images[0]?.url ?? "/images/products/vial-blue.jpg";
   const main = images[0]?.url ?? img;
-  const infoOnly = p.category === "steroids";
+  const infoOnly = isInfoOnly(p.category);
   const quoteOnly = !infoOnly && !p.in_stock;
   const specs = (Array.isArray(p.specs) ? p.specs : []) as { label: string; value: string }[];
-  const related = all.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 4);
+  // Prefer products from the same subcategory, then fill from the rest of the category.
+  const related = [
+    ...all.filter((x) => x.subcategory === p.subcategory && x.category === p.category && x.id !== p.id),
+    ...all.filter((x) => x.subcategory !== p.subcategory && x.category === p.category),
+  ].slice(0, 4);
   const powder = (p.form ?? "").toLowerCase().includes("powder");
 
   return (
@@ -82,6 +86,7 @@ function ProductPage() {
         <nav className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-brand">Home</Link><ChevronRight className="h-3 w-3" />
           <Link to="/category/$slug" params={{ slug: p.category }} className="hover:text-brand">{categoryName(p.category)}</Link><ChevronRight className="h-3 w-3" />
+          {p.category !== "research" && <><Link to="/category/$slug" params={{ slug: p.category }} search={{ sub: p.subcategory }} className="hover:text-brand">{subcategoryName(p.category, p.subcategory)}</Link><ChevronRight className="h-3 w-3" /></>}
           <span className="text-navy">{p.name}</span>
         </nav>
       </div>
@@ -101,7 +106,7 @@ function ProductPage() {
           )}
         </div>
         <div>
-          <p className="text-sm font-semibold uppercase tracking-wide text-brand">{categoryName(p.category)}</p>
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand">{categoryName(p.category)}{p.category !== "research" && <> · {subcategoryName(p.category, p.subcategory)}</>}</p>
           <h1 className="mt-1 text-3xl font-extrabold text-navy md:text-4xl">{p.name}</h1>
           {p.subtitle && <p className="mt-1 text-lg text-charcoal">{p.subtitle}</p>}
           <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground"><Stars rating={p.rating} className="h-4 w-4" />{p.rating} ({p.review_count} reviews)</div>
