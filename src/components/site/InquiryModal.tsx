@@ -70,7 +70,7 @@ export function InquiryModal({
       setDone(true);
       onSuccess?.();
     } catch {
-      toast.error("We couldn't send your inquiry. Please try again or email support@peptidelabs.com.");
+      toast.error("We couldn't send your inquiry. Please try again or email sales@peptidelabs.com.");
     } finally {
       setBusy(false);
     }

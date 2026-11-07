@@ -1,6 +1,6 @@
 // All site forms are delivered by FormSubmit to this inbox.
 // Replace with the business inbox; the first submission triggers a one-time activation email from FormSubmit.
-export const FORM_EMAIL = "support@peptidelabs.com";
+export const FORM_EMAIL = "sales@peptidelabs.com";
 
 export async function submitForm(subject: string, fields: Record<string, string | number>) {
   const res = await fetch(`https://formsubmit.co/ajax/${FORM_EMAIL}`, {
