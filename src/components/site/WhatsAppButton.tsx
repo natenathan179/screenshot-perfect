@@ -1,5 +1,4 @@
 const PHONE_DISPLAY = "+1 (949) 212-0576";
-const PHONE_TEL = "tel:+19492120576";
 const WHATSAPP_LINK = "https://wa.me/19492120576";
 
 function WhatsAppGlyph({ className }: { className?: string }) {
@@ -12,27 +11,21 @@ function WhatsAppGlyph({ className }: { className?: string }) {
 
 export function WhatsAppButton() {
   return (
-    <div className="fixed bottom-5 right-4 z-50 flex flex-col items-end gap-2 sm:bottom-7 sm:right-6">
-      <a
-        href={PHONE_TEL}
-        className="hidden rounded-full border border-border bg-background/95 px-3 py-1.5 text-xs font-semibold text-navy shadow-md backdrop-blur hover:bg-ice sm:block"
-      >
-        Call {PHONE_DISPLAY}
-      </a>
-      <a
-        href={WHATSAPP_LINK}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Chat with PeptideLabs on WhatsApp at ${PHONE_DISPLAY}`}
-        title={`Chat with us on WhatsApp — ${PHONE_DISPLAY}`}
-        className="group flex items-center gap-2.5 rounded-full bg-whatsapp px-4 py-3.5 text-white shadow-lg shadow-whatsapp/30 transition-all hover:bg-whatsapp-deep hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-      >
-        <WhatsAppGlyph className="h-6 w-6 shrink-0" />
-        <span className="hidden text-sm font-bold leading-none sm:block">
-          Chat with us
-          <span className="mt-1 block text-[11px] font-medium opacity-90">{PHONE_DISPLAY}</span>
-        </span>
-      </a>
-    </div>
+    <a
+      href={WHATSAPP_LINK}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Chat with PeptideLabs on WhatsApp at ${PHONE_DISPLAY}`}
+      title={`Chat with us on WhatsApp — ${PHONE_DISPLAY}`}
+      className="group fixed bottom-5 right-4 z-50 flex h-14 items-center gap-0 overflow-hidden rounded-full bg-whatsapp pr-0 text-white shadow-lg shadow-whatsapp/30 transition-all duration-300 hover:bg-whatsapp-deep hover:pr-5 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring focus-visible:pr-5 sm:bottom-7 sm:right-6"
+    >
+      <span className="grid h-14 w-14 shrink-0 place-items-center">
+        <WhatsAppGlyph className="h-7 w-7" />
+      </span>
+      <span className="max-w-0 whitespace-nowrap text-sm font-bold leading-tight opacity-0 transition-all duration-300 group-hover:max-w-[16rem] group-hover:opacity-100 group-focus-visible:max-w-[16rem] group-focus-visible:opacity-100">
+        Chat with us
+        <span className="block text-[11px] font-medium opacity-90">{PHONE_DISPLAY}</span>
+      </span>
+    </a>
   );
 }
