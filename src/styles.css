@@ -66,6 +66,8 @@
   --color-brand: var(--brand);
   --color-success: var(--success);
   --color-star: var(--star);
+  --color-whatsapp: var(--whatsapp);
+  --color-whatsapp-deep: var(--whatsapp-deep);
   --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
 }
@@ -95,6 +97,8 @@
   --destructive-foreground: oklch(0.99 0 0);
   --success: oklch(0.6 0.15 155);
   --star: oklch(0.78 0.16 75);
+  --whatsapp: oklch(0.72 0.19 145);
+  --whatsapp-deep: oklch(0.6 0.16 145);
   --border: oklch(0.91 0.015 245);
   --input: oklch(0.89 0.015 245);
   --ring: oklch(0.55 0.19 258);
