@@ -14,6 +14,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { CartProvider } from "@/lib/cart";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { supabase } from "@/integrations/supabase/client";
 
 import appCss from "../styles.css?url";
@@ -148,6 +149,7 @@ function RootComponent() {
           <Outlet />
         </main>
         {!isAdmin && <Footer />}
+        {!isAdmin && <WhatsAppButton />}
         <Toaster richColors position="top-center" />
       </CartProvider>
     </QueryClientProvider>

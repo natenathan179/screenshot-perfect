@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { PageHero, seo } from "@/components/site/PageHero";
 import { SimpleForm } from "@/components/site/SimpleForm";
 
@@ -11,14 +11,19 @@ export const Route = createFileRoute("/contact")({
       <div className="container-x grid gap-10 py-12 lg:grid-cols-[20rem_minmax(0,1fr)]">
         <aside className="space-y-4">
           {[
-            [Mail, "Email", "sales@peptidelabs.com"],
-            [Phone, "Phone", "+1 (800) 555-0123"],
-            [Clock, "Hours", "Mon–Fri, 9:00–18:00 (GMT/EST)"],
-            [MapPin, "Serving", "United States • United Kingdom • Europe • International"],
-          ].map(([I, t, d]) => { const Icon = I as typeof Mail; return (
+            [Mail, "Email", "sales@peptidelabs.com", "mailto:sales@peptidelabs.com"],
+            [Phone, "Phone", "+1 (949) 212-0576", "tel:+19492120576"],
+            [MessageCircle, "WhatsApp", "+1 (949) 212-0576", "https://wa.me/19492120576"],
+            [Clock, "Hours", "Mon–Fri, 9:00–18:00 (GMT/EST)", ""],
+            [MapPin, "Serving", "United States • United Kingdom • Europe • International", ""],
+          ].map(([I, t, d, href]) => { const Icon = I as typeof Mail; return (
             <div key={t as string} className="flex gap-3 rounded-lg bg-ice p-4">
               <Icon className="h-5 w-5 shrink-0 text-brand" />
-              <div><p className="font-bold text-navy">{t as string}</p><p className="text-sm text-charcoal">{d as string}</p></div>
+              <div><p className="font-bold text-navy">{t as string}</p>{href ? (
+                <a href={href as string} target={href === "https://wa.me/19492120576" ? "_blank" : undefined} rel="noopener noreferrer" className="text-sm text-charcoal underline-offset-4 hover:underline">{d as string}</a>
+              ) : (
+                <p className="text-sm text-charcoal">{d as string}</p>
+              )}</div>
             </div>); })}
         </aside>
         <div className="rounded-xl border border-border p-6 md:p-8">

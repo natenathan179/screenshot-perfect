@@ -40,7 +40,7 @@ export function Header() {
             <span className="flex items-center gap-1.5"><FlaskConical className="h-3.5 w-3.5" />Lab Tested Products</span>
           </div>
           <div className="flex w-full items-center justify-between gap-4 md:w-auto">
-            <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5" />+1 (800) 555-0123</span>
+            <a href="tel:+19492120576" className="flex items-center gap-1.5 hover:text-primary-foreground"><Phone className="h-3.5 w-3.5" />+1 (949) 212-0576</a>
             <a href="mailto:sales@peptidelabs.com" className="flex items-center gap-1.5 hover:text-primary-foreground"><Mail className="h-3.5 w-3.5" />sales@peptidelabs.com</a>
           </div>
         </div>
